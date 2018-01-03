@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="glol23m@163.com"><title>Android笔记1 · KREEDX</title><meta name="description" content="##布局
+###FrameLayout    FrameLayout的属性很少就两个,但是在说之前我们先介绍一个东西:    前景图像:永远处于帧布局最上面,直接面对用户的图像,就是不会被覆盖的图片。    两个属性:    android:foreground:*设置改帧布局容器的前景图像    "><meta name="keywords" content="Hexo,HTML,CSS,android,Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/blog/css/style.css"><link rel="stylesheet" href="/blog/css/blog_basic.css"><link rel="stylesheet" href="/blog/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/blog/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">KREEDX</a></h3><div class="description"><p>技术分享</p></div></div></div><ul class="social-links"><li><a href="http://weibo.com/u/6343727796?refer_flag=1001030201_&amp;is_all=1"><i class="fa fa-weibo"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/blog">首页</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/blog/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Android笔记1</a></h3></div><div class="post-content"><p>##布局<br><img src="http://www.runoob.com/wp-content/uploads/2015/07/15116314.jpg" alt=""><br><img src="http://www.runoob.com/wp-content/uploads/2015/07/797932661.png" alt=""><br><img src="http://www.runoob.com/wp-content/uploads/2015/07/60974640.jpg" alt=""></p>
+<p>###FrameLayout<br>    FrameLayout的属性很少就两个,但是在说之前我们先介绍一个东西:<br>    前景图像:永远处于帧布局最上面,直接面对用户的图像,就是不会被覆盖的图片。<br>    两个属性:<br>    android:foreground:*设置改帧布局容器的前景图像<br>    android:foregroundGravity:设置前景图像显示的位置<br><img src="http://www.runoob.com/wp-content/uploads/2015/07/71483585.jpg" alt=""></p>
+<p>###AbsoluteLayout</p>
+<ol>
+<li><p>控制大小: android:layout_width:组件宽度 android:layout_height:组件高度 </p>
+</li>
+<li><p>控制位置: android:layout_x:设置组件的X坐标 android:layout_y:设置组件的Y坐标</p>
+</li>
+</ol>
+<p>##Adapter<br><img src="http://www.runoob.com/wp-content/uploads/2015/09/77919389.jpg" alt=""></p>
+<p>###BaseAdapter优化<br>1.复用ConvertView：<br>上面也说了，界面上有多少个Item，那么getView方法就会被调用多少次！ 我们来看看上一节我们写的getView()部分的代码：</p>
+<pre><code>@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+    convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_animal,parent,false);
+    ImageView img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
+    TextView txt_aName = (TextView) convertView.findViewById(R.id.txt_aName);
+    TextView txt_aSpeak = (TextView) convertView.findViewById(R.id.txt_aSpeak);
+
+    img_icon.setBackgroundResource(mData.get(position).getaIcon());
+    txt_aName.setText(mData.get(position).getaName());
+    txt_aSpeak.setText(mData.get(position).getaSpeak());
+    return convertView;
+}
+</code></pre><p>是吧，inflate()每次都要加载一次xml，其实这个convertView是系统提供给我们的可供服用的View 的缓存对象，那就坐下判断咯，修改下，优化后的代码：</p>
+<pre><code>@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+
+    if(convertView == null){
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_animal,parent,false);
+    }
+
+    ImageView img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
+    TextView txt_aName = (TextView) convertView.findViewById(R.id.txt_aName);
+    TextView txt_aSpeak = (TextView) convertView.findViewById(R.id.txt_aSpeak);
+
+    img_icon.setBackgroundResource(mData.get(position).getaIcon());
+    txt_aName.setText(mData.get(position).getaName());
+    txt_aSpeak.setText(mData.get(position).getaSpeak());
+    return convertView;
+}
+</code></pre><p>2.ViewHolder重用组件<br>嘿嘿，getView()会被调用多次，那么findViewById不一样得调用多次，而我们的ListView的Item 一般都是一样的布局，我们可以对这里在优化下，我们可以自己定义一个ViewHolder类来对这一部分 进行性能优化！修改后的代码如下：</p>
+<pre><code>@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder holder = null;
+    if(convertView == null){
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_animal,parent,false);
+        holder = new ViewHolder();
+        holder.img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
+        holder.txt_aName = (TextView) convertView.findViewById(R.id.txt_aName);
+        holder.txt_aSpeak = (TextView) convertView.findViewById(R.id.txt_aSpeak);
+        convertView.setTag(holder);   //将Holder存储到convertView中
+    }else{
+        holder = (ViewHolder) convertView.getTag();
+    }
+    holder.img_icon.setBackgroundResource(mData.get(position).getaIcon());
+    holder.txt_aName.setText(mData.get(position).getaName());
+    holder.txt_aSpeak.setText(mData.get(position).getaSpeak());
+    return convertView;
+}
+
+static class ViewHolder{
+    ImageView img_icon;
+    TextView txt_aName;
+    TextView txt_aSpeak;
+}
+</code></pre><p>没错就是这么简单，你以后BaseAdapter照着这个模板写就对了，哈哈，另外这个修饰ViewHolder的 static，关于是否定义成静态，跟里面的对象数目是没有关系的，加静态是为了在多个地方使用这个 Holder的时候，类只需加载一次，如果只是使用了一次，加不加也没所谓！——Berial(B神)原话~</p>
+<p>###本节小结：<br>好的，关于BaseAdapter的优化大概就上述的两种，非常简单，复用ConvertView以及自定义ViewHolder 减少findViewById()的调用~如果你有其他关于BaseAdapter优化的建议欢迎提出，谢谢~</p>
+<p>###扩展<br><a href="http://www.runoob.com/w3cnote/android-tutorial-customer-baseadapter.html" title="构建一个可复用的自定义BaseAdapter" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-customer-baseadapter.html</a></p>
+<p><a href="http://www.runoob.com/w3cnote/android-tutorial-listview-item.html" title="ListView Item多布局的实现" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-listview-item.html</a></p>
+<p><a href="http://www.runoob.com/w3cnote/android-tutorial-drawerlayout.html" title="DrawerLayout(官方侧滑菜单)的简单使用" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-drawerlayout.html</a></p>
+<p>##Notification</p>
+<pre><code>状态通知栏主要涉及到2个类：Notification 和NotificationManager
+Notification：通知信息类，它里面对应了通知栏的各个属性
+NotificationManager：是状态栏通知的管理类，负责发通知、清除通知等操作。
+使用的基本流程：
+    Step 1. 获得NotificationManager对象： NotificationManager mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    Step 2. 创建一个通知栏的Builder构造类： Notification.Builder mBuilder = new Notification.Builder(this);
+    Step 3. 对Builder进行相关的设置，比如标题，内容，图标，动作等！
+    Step 4.调用Builder的build()方法为notification赋值
+    Step 5.调用NotificationManager的notify()方法发送通知！
+PS:另外我们还可以调用NotificationManager的cancel()方法取消通知
+</code></pre><p><a href="http://www.runoob.com/w3cnote/android-tutorial-notification.html" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-notification.html</a></p>
+<p>##事件处理</p>
+<p><img src="http://www.runoob.com/wp-content/uploads/2015/07/4109430.jpg" alt=""><br><a href="http://www.runoob.com/w3cnote/android-tutorial-touchlistener-ontouchevent.html" title="多点触碰" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-touchlistener-ontouchevent.html</a></p>
+<p><a href="http://www.runoob.com/w3cnote/android-tutorial-gestures.html" title="手势" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-gestures.html</a></p>
+<p>##组件<br><img src="http://www.runoob.com/wp-content/uploads/2015/08/18364230.jpg" alt="Activity生命周期"><br><a href="http://www.runoob.com/w3cnote/android-tutorial-activity.html" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-activity.html</a></p>
+<p><img src="http://www.runoob.com/wp-content/uploads/2015/08/93497523.jpg" alt="http://www.runoob.com/wp-content/uploads/2015/08/93497523.jpg"></p>
+<p><img src="http://www.runoob.com/wp-content/uploads/2015/08/21242330.jpg" alt="线程什么周期"><br><img src="http://www.runoob.com/wp-content/uploads/2015/08/11165797.jpg" alt=""></p>
+<p><img src="http://www.runoob.com/wp-content/uploads/2015/08/58811327.jpg" alt=""></p>
+<p>##动画<br><a href="http://www.runoob.com/w3cnote/android-tutorial-animation.html" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/android-tutorial-animation.html</a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-01-03</span><i class="fa fa-tag"></i><a class="tag" href="/blog/tags/Android-笔记/" title="Android,笔记">Android,笔记 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,https://usr80.github.io/blog/2018/01/03/Android笔记1/,KREEDX,Android笔记1,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/blog/2018/01/03/Cocos2dx-基本概念/" title="Cocos2dx 基本概念">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/blog/2018/01/02/Vue介绍/" title="Vue介绍">下一篇</a></li></ul></div></div></div></div></div><script src="/blog/js/jquery.js"></script><script src="/blog/js/jquery-migrate-1.2.1.min.js"></script><script src="/blog/js/jquery.appear.js"></script></body></html>
