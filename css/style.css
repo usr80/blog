@@ -10,7 +10,6 @@ body {
   font-size: 15px;
   width: 100%;
   margin: 0 auto 30px auto;
-  background-color: #fff;
 }
 
 p {
@@ -692,4 +691,12 @@ a.btn {
   .share {
     display: grid;
   }
+}
+
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+  background-color:white;
+  z-index:-1;
 }
