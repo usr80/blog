@@ -693,10 +693,4 @@ a.btn {
   }
 }
 
-canvas{
-  position:absolute;
-  top:0;
-  left:0;
-  background-color:white;
-  z-index:-1;
-}
+
