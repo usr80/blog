@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="glol23m@163.com"><title>gulp 自动化构建 · KREEDX</title><meta name="description" content="use-gulp为什么使用gulp?首先看一篇文章 Gulp的目标是取代Grunt
+
+根据gulp的文档，它努力实现的主要特性是：
+
+易于使用：采用代码优于配置策略，gulp让简单的事情继续简单，复杂的任务变得可管理。
+高效：通过利用node.js强大的流，不需要往磁盘写中间文件，可以更快地完成构建"><meta name="keywords" content="Hexo,HTML,CSS,android,Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/blog/css/style.css"><link rel="stylesheet" href="/blog/css/blog_basic.css"><link rel="stylesheet" href="/blog/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/blog/images/logo@2x.png" style="width:127px;border-radius: 300px;"><h3 title=""><a href="/">KREEDX</a></h3><div class="description"><p>技术分享</p></div></div></div><ul class="social-links"><li><a href="http://weibo.com/u/6343727796?refer_flag=1001030201_&amp;is_all=1"><i class="fa fa-weibo"></i></a></li><li><a qq="1471699315" id="qq"><i class="fa fa-qq"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/blog">首页</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/blog/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>gulp 自动化构建</a></h3></div><div class="post-content"><h1 id="use-gulp"><a href="#use-gulp" class="headerlink" title="use-gulp"></a>use-gulp</h1><h4 id="为什么使用gulp"><a href="#为什么使用gulp" class="headerlink" title="为什么使用gulp?"></a>为什么使用gulp?</h4><p>首先看一篇文章 <a href="http://www.infoq.com/cn/news/2014/02/gulp" target="_blank" rel="noopener">Gulp的目标是取代Grunt</a></p>
+<blockquote>
+<p>根据gulp的文档，它努力实现的主要特性是：</p>
+<ul>
+<li>易于使用：采用代码优于配置策略，gulp让简单的事情继续简单，复杂的任务变得可管理。</li>
+<li>高效：通过利用node.js强大的流，不需要往磁盘写中间文件，可以更快地完成构建。</li>
+<li>高质量：gulp严格的插件指导方针，确保插件简单并且按你期望的方式工作。</li>
+<li>易于学习：通过把API降到最少，你能在很短的时间内学会gulp。构建工作就像你设想的一样：是一系列流管道。</li>
+</ul>
+<p>Gulp通过<strong>流和代码优于配置</strong>策略来尽量简化任务编写的工作。</p>
+</blockquote>
+<p>别的先不说，通过代码来比较两者（gulp VS grunt）<br>可以参照我的代码，也可以阅读[该文章] (<a href="http://www.techug.com/gulp)。" target="_blank" rel="noopener">http://www.techug.com/gulp)。</a></p>
+<ul>
+<li><a href="https://github.com/hjzheng/angular-cuf-nav/blob/master/Gruntfile.js" target="_blank" rel="noopener">Gruntfile.js</a></li>
+<li><a href="https://github.com/hjzheng/html2js-gulp-for-cuf/blob/master/gulpfile.js" target="_blank" rel="noopener">gulpfile.js</a></li>
+</ul>
+<p>两者的功能基本类似，gulp是通过代码完成任务，体现了代码优于配置的原则，对程序员更加友好，另外它也可以将多个功能一次性串起来，不需要暂存在本地，体现了对流的使用，这个可以阅读<a href="http://www.techug.com/gulp" target="_blank" rel="noopener">该文章</a>里的例子。</p>
+<p>另外，经常会有人问，为什么gulp比grunt快，这个可以参考这篇<a href="http://jaysoo.ca/2014/01/27/gruntjs-vs-gulpjs/" target="_blank" rel="noopener">文章</a> 或者我本人在segmentfault上得回答<a href="http://segmentfault.com/q/1010000003951849/a-1020000003952258" target="_blank" rel="noopener">编译同样的scss，为什么gulp的速度几乎是grunt的两倍?</a></p>
+<h4 id="关于NodeJS流-stream"><a href="#关于NodeJS流-stream" class="headerlink" title="关于NodeJS流(stream)"></a>关于NodeJS流(stream)</h4><p>因为gulp是基于流的方式工作的，所以想要进一步深入gulp，我们应该先学习NodeJS的流, 当然即使对流不熟悉，依然可以很方便的使用gulp。</p>
+<ul>
+<li>资料<ul>
+<li><a href="https://github.com/substack/stream-adventure" target="_blank" rel="noopener">NodeSchool stream-adventure</a></li>
+<li><a href="https://github.com/substack/stream-handbook" target="_blank" rel="noopener">stream-handbook</a></li>
+</ul>
+</li>
+<li>相关视频<ul>
+<li><a href="https://www.youtube.com/watch?v=QgEuZ52OZtU&amp;list=PLPlAdM3UjHKok9rS8_RTQTSLtRBThk1ni&amp;index=2" target="_blank" rel="noopener">How streams help to raise Node.js performance</a></li>
+<li><a href="https://www.youtube.com/watch?v=9llfAByho98&amp;index=1&amp;list=PLPlAdM3UjHKok9rS8_RTQTSLtRBThk1ni" target="_blank" rel="noopener">Node.js streams for the utterly confused</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="常用资料"><a href="#常用资料" class="headerlink" title="常用资料"></a>常用资料</h4><ul>
+<li>Gulp官网 <a href="http://gulpjs.com/" target="_blank" rel="noopener">http://gulpjs.com/</a></li>
+<li>Gulp中文网 <a href="http://www.gulpjs.com.cn/" target="_blank" rel="noopener">http://www.gulpjs.com.cn/</a></li>
+<li>Gulp中文文档 <a href="https://github.com/lisposter/gulp-docs-zh-cn" target="_blank" rel="noopener">https://github.com/lisposter/gulp-docs-zh-cn</a></li>
+<li>Gulp插件网 <a href="http://gulpjs.com/plugins/" target="_blank" rel="noopener">http://gulpjs.com/plugins/</a></li>
+<li>Awesome Gulp <a href="https://github.com/alferov/awesome-gulp" target="_blank" rel="noopener">https://github.com/alferov/awesome-gulp</a></li>
+<li>StuQ-Gulp实战和原理解析 <a href="http://i5ting.github.io/stuq-gulp/" target="_blank" rel="noopener">http://i5ting.github.io/stuq-gulp/</a></li>
+<li>glob用法 <a href="https://github.com/isaacs/node-glob" target="_blank" rel="noopener">https://github.com/isaacs/node-glob</a></li>
+</ul>
+<h4 id="gulp常用插件"><a href="#gulp常用插件" class="headerlink" title="gulp常用插件"></a>gulp常用插件</h4><ul>
+<li><p><strong>流控制</strong></p>
+<ul>
+<li><a href="http://www.atticuswhite.com/blog/merging-gulpjs-streams/" target="_blank" rel="noopener">event-stream</a> 事件流，不是插件但很有用 </li>
+<li><a href="https://github.com/robrich/gulp-if" target="_blank" rel="noopener">gulp-if</a> 有条件的运行一个task</li>
+<li><a href="https://github.com/mariocasciaro/gulp-clone" target="_blank" rel="noopener">gulp-clone</a> Clone files in memory in a gulp stream 非常有用</li>
+<li><a href="https://github.com/hughsk/vinyl-source-stream" target="_blank" rel="noopener">vinyl-source-stream</a> Use conventional text streams at the start of your gulp or vinyl pipelines </li>
+</ul>
+</li>
+<li><p><strong>AngularJS</strong></p>
+<ul>
+<li><a href="https://github.com/Kagami/gulp-ng-annotate" target="_blank" rel="noopener">gulp-ng-annotate</a> 注明依赖 for angular</li>
+<li><a href="https://github.com/marklagendijk/gulp-ng-html2js" target="_blank" rel="noopener">gulp-ng-html2js</a> html2js for angular</li>
+<li><a href="https://libraries.io/npm/gulp-angular-extender" target="_blank" rel="noopener">gulp-angular-extender</a> 为angular module添加dependencies</li>
+<li><a href="https://github.com/miickel/gulp-angular-templatecache" target="_blank" rel="noopener">gulp-angular-templatecache</a> 将html模板缓存到$templateCache中</li>
+</ul>
+</li>
+<li><p><strong>文件操作</strong></p>
+<ul>
+<li><a href="https://github.com/peter-vilja/gulp-clean" target="_blank" rel="noopener">gulp-clean</a>  删除文件和目录, 请用<a href="https://github.com/sindresorhus/del" target="_blank" rel="noopener">del</a>来代替它<a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-11-10" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/wearefractal/gulp-concat" target="_blank" rel="noopener">gulp-concat</a> 合并文件</li>
+<li><a href="https://github.com/hparra/gulp-rename" target="_blank" rel="noopener">gulp-rename</a> 重命名文件</li>
+<li><a href="https://github.com/sirlantis/gulp-order" target="_blank" rel="noopener">gulp-order</a> 对src中的文件按照指定顺序进行排序</li>
+<li><a href="https://github.com/sindresorhus/gulp-filter" target="_blank" rel="noopener">gulp-filter</a> 过滤文件 非常有用 <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/blob/master/2015-11-10/gulpfile.js" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/armed/gulp-flatten" target="_blank" rel="noopener">gulp-flatten</a> 当拷贝文件时，不想拷贝目录时使用 <a href="http://segmentfault.com/q/1010000004266922" target="_blank" rel="noopener">segmentfault</a></li>
+</ul>
+</li>
+<li><p><strong>压缩</strong></p>
+<ul>
+<li><a href="https://github.com/scniro/gulp-clean-css" target="_blank" rel="noopener">gulp-clean-css</a>压缩css</li>
+<li><a href="https://github.com/terinjokes/gulp-uglify" target="_blank" rel="noopener">gulp-uglify</a> 用uglify压缩js</li>
+<li><a href="https://github.com/sindresorhus/gulp-imagemin" target="_blank" rel="noopener">gulp-imagemin</a> 压缩图片</li>
+<li><a href="https://github.com/jonschlinkert/gulp-htmlmin" target="_blank" rel="noopener">gulp-htmlmin</a> 压缩html</li>
+<li><a href="https://github.com/ben-eb/gulp-csso" target="_blank" rel="noopener">gulp-csso</a> 优化CSS</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>工具</strong></p>
+<ul>
+<li><a href="https://github.com/jackfranklin/gulp-load-plugins" target="_blank" rel="noopener">gulp-load-plugins</a> 自动导入gulp plugin</li>
+<li><a href="https://www.npmjs.com/package/gulp-load-utils" target="_blank" rel="noopener">gulp-load-utils</a> 增强版gulp-utils</li>
+<li><a href="https://github.com/OverZealous/gulp-task-listing" target="_blank" rel="noopener">gulp-task-listing</a> 快速显示gulp task列表</li>
+<li><a href="https://github.com/chmontgomery/gulp-help" target="_blank" rel="noopener">gulp-help</a> 为task添加帮助描述</li>
+<li><a href="https://github.com/mlucool/gulp-jsdoc3" target="_blank" rel="noopener">gulp-jsdoc3</a> 生成JS文档</li>
+<li><a href="https://github.com/floatdrop/gulp-plumber" target="_blank" rel="noopener">gulp-plumber</a> Prevent pipe breaking caused by errors from gulp plugins <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-11-10" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/bcoe/yargs" target="_blank" rel="noopener">yargs</a> 处理 process.argv</li>
+<li><a href="https://github.com/OverZealous/run-sequence" target="_blank" rel="noopener">run-sequence</a> 顺序执行 gulp task，gulp 4.0 已经支持该功能 <code>gulp.series(...tasks)</code></li>
+<li><a href="https://github.com/mikaelbr/gulp-notify" target="_blank" rel="noopener">gulp-notify</a> gulp plugin to send messages based on Vinyl Files</li>
+<li><a href="https://github.com/sun-zheng-an/gulp-shell" target="_blank" rel="noopener">gulp-shell</a> 非常有用</li>
+<li><a href="https://github.com/gratimax/gulp-grunt" target="_blank" rel="noopener">gulp-grunt</a> 在gulp中运行grunt task</li>
+</ul>
+</li>
+<li><p><strong>JS/CSS自动注入</strong></p>
+<ul>
+<li><a href="https://github.com/zont/gulp-usemin" target="_blank" rel="noopener">gulp-usemin</a> Replaces references to non-optimized scripts or stylesheets into a set of HTML files</li>
+<li><a href="https://github.com/klei/gulp-inject" target="_blank" rel="noopener">gulp-inject</a> 在HTML中自动添加style和script标签 <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-8-17/bower-dependence-inject" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/taptapship/wiredep" target="_blank" rel="noopener">wiredep</a> 将bower依赖自动写到index.html中 <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-8-17/bower-dependence-inject" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/jonkemp/gulp-useref" target="_blank" rel="noopener">gulp-useref</a> 功能类似与usemin <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-8-17/bower-dependence-inject" target="_blank" rel="noopener">Example</a> 新版本用法有变化，详见gulp-useref的README.md</li>
+</ul>
+</li>
+<li><p><strong>代码同步</strong></p>
+<ul>
+<li><a href="https://github.com/BrowserSync/browser-sync" target="_blank" rel="noopener">browser-sync</a> 自动同步浏览器，结合gulp.watch方法一起使用 <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-5-30/gulp-babel-test" target="_blank" rel="noopener">Example 1</a> <a href="https://github.com/hjzheng/es6-practice/blob/master/gulpfile.js" target="_blank" rel="noopener">Example 2</a></li>
+<li><a href="https://github.com/JacksonGariety/gulp-nodemon" target="_blank" rel="noopener">gulp-nodemon</a> server端代码同步</li>
+</ul>
+</li>
+<li><p><strong>Transpilation</strong></p>
+<ul>
+<li><a href="https://github.com/babel/gulp-babel" target="_blank" rel="noopener">gulp-babel</a> 将ES6代码编译成ES5   <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-5-30/gulp-babel-test" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/babel/babelify" target="_blank" rel="noopener">babelify</a>  Browserify transform for Babel</li>
+<li><a href="https://github.com/sindresorhus/gulp-traceur" target="_blank" rel="noopener">gulp-traceur</a>  Traceur is a JavaScript.next-to-JavaScript-of-today compiler </li>
+</ul>
+</li>
+<li><p><strong>打包</strong></p>
+<ul>
+<li><a href="https://www.npmjs.com/package/gulp-browserify" target="_blank" rel="noopener">gulp-browserify</a>  用它和 babelify 实现ES6 module <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-5-30/gulp-es6-module" target="_blank" rel="noopener">Example</a></li>
+</ul>
+</li>
+<li><p><strong>编译</strong></p>
+<ul>
+<li><a href="https://github.com/plus3network/gulp-less" target="_blank" rel="noopener">gulp-less</a>  处理less <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-7-23/gulp-less-bootstrap" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/dlmanning/gulp-sass" target="_blank" rel="noopener">gulp-sass</a> 处理sass</li>
+</ul>
+</li>
+<li><p><strong>代码分析</strong></p>
+<ul>
+<li><a href="https://github.com/spalger/gulp-jshint" target="_blank" rel="noopener">gulp-jshint</a> JSHint检查 <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-11-10" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/jscs-dev/gulp-jscs" target="_blank" rel="noopener">gulp-jscs</a> 检查JS代码风格 <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-11-10" target="_blank" rel="noopener">Example</a></li>
+</ul>
+</li>
+<li><p><strong>特别推荐</strong></p>
+<ul>
+<li><a href="https://github.com/sindresorhus/gulp-changed" target="_blank" rel="noopener">gulp-changed</a> 只传输修改过的文件</li>
+<li><a href="https://github.com/wearefractal/gulp-cached" target="_blank" rel="noopener">gulp-cached</a> 将文件先cache起来，先不进行操作</li>
+<li><a href="https://github.com/ahaurw01/gulp-remember" target="_blank" rel="noopener">gulp-remember</a> 和gulp-cached一块使用</li>
+<li><a href="https://github.com/tschaub/gulp-newer" target="_blank" rel="noopener">gulp-newer</a> pass through newer source files only, supports many:1 source:dest</li>
+</ul>
+</li>
+<li><p><strong>其他</strong></p>
+<ul>
+<li><a href="https://github.com/shama/webpack-stream" target="_blank" rel="noopener">webpack-stream</a> gulp与webpack <a href="https://github.com/hjzheng/angular-es6-practice/blob/master/gulp/scripts.js" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/sindresorhus/gulp-autoprefixer" target="_blank" rel="noopener">gulp-autoprefixer</a>  Prefix CSS</li>
+<li><a href="https://github.com/floridoo/gulp-sourcemaps" target="_blank" rel="noopener">gulp-sourcemaps</a> 生成source map文件</li>
+<li><a href="https://github.com/sindresorhus/gulp-rev" target="_blank" rel="noopener">gulp-rev</a> Static asset revisioning by appending content hash to filenames: unicorn.css → unicorn-d41d8cd98f.css </li>
+<li><a href="https://github.com/jamesknelson/gulp-rev-replace" target="_blank" rel="noopener">gulp-rev-replace</a> <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-11-10" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/nfroidure/gulp-iconfont" target="_blank" rel="noopener">gulp-iconfont</a> 制作iconfont <a href="https://github.com/hjzheng/CUF_meeting_knowledge_share/tree/master/2015-7-24/gulp-test-iconfont" target="_blank" rel="noopener">Example</a></li>
+<li><a href="https://github.com/Hiswe/gulp-svg-symbols" target="_blank" rel="noopener">gulp-svg-symbols</a> 制作SVG Symbols, <a href="http://isux.tencent.com/zh-hans/16292.html" target="_blank" rel="noopener">关于使用SVG Symbol</a></li>
+<li><a href="https://github.com/sindresorhus/gulp-template" target="_blank" rel="noopener">gulp-template</a> 模板替换</li>
+<li><a href="https://github.com/cgross/gulp-dom-src" target="_blank" rel="noopener">gulp-dom-src</a> 将html中的script，link等标签中的文件转成gulp stream。</li>
+<li><a href="https://github.com/KenPowers/gulp-cheerio" target="_blank" rel="noopener">gulp-cheerio</a> Manipulate HTML and XML files with Cheerio in Gulp. </li>
+<li><a href="https://www.npmjs.com/package/require-dir" target="_blank" rel="noopener">require-dir</a> 利用它我们可以将 gulpfile.js 分成多个文件，具体用法可以参考这个<a href="http://macr.ae/article/splitting-gulpfile-multiple-files.html" target="_blank" rel="noopener">Splitting a gulpfile into multiple files</a></li>
+<li><a href="https://github.com/JacksonGariety/gulp-nodemon" target="_blank" rel="noopener">gulp-nodemon</a> 强烈推荐, 监控你的node应用,并重现启动server</li>
+</ul>
+</li>
+</ul>
+<h4 id="gulp入门视频"><a href="#gulp入门视频" class="headerlink" title="gulp入门视频"></a>gulp入门视频</h4><ul>
+<li><p><strong>Learning Gulp</strong> (youtube)</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=wNlEK8qrb0M" target="_blank" rel="noopener">Learning Gulp #1 - Installing &amp; Introducing Gulp </a></li>
+<li><a href="https://www.youtube.com/watch?v=Kh4eYdd8O4w" target="_blank" rel="noopener">Learning Gulp #2 - Using Plugins &amp; Minifying JavaScript</a></li>
+<li><a href="https://www.youtube.com/watch?v=YBGeJnMrzzE" target="_blank" rel="noopener">Learning Gulp #3 - Named Tasks </a></li>
+<li><a href="https://www.youtube.com/watch?v=0luuGcoLnxM" target="_blank" rel="noopener">Learning Gulp #4 - Watching Files With Gulp </a></li>
+<li><a href="https://www.youtube.com/watch?v=cg7lwX0u-U0" target="_blank" rel="noopener">Learning Gulp #5 - Compiling Sass With Gulp </a></li>
+<li><a href="https://www.youtube.com/watch?v=rF6niaDKcxE" target="_blank" rel="noopener">Learning Gulp #6 - Keep Gulp Running With Plumber </a></li>
+<li><a href="https://www.youtube.com/watch?v=o24f4imRbxQ" target="_blank" rel="noopener">Learning Gulp #7 - Handling Errors Without Plumber </a></li>
+<li><a href="https://www.youtube.com/watch?v=r5fvdIa0ETk" target="_blank" rel="noopener">Learning Gulp #8 - LiveReload With Gulp </a></li>
+<li><a href="https://www.youtube.com/watch?v=oXxMdT7T9qU" target="_blank" rel="noopener">Learning Gulp #9 - Easy Image Compression</a></li>
+<li><a href="https://www.youtube.com/watch?v=v259QplNDKk" target="_blank" rel="noopener">Learning Gulp #10 - Automatic Browser Prefixing </a></li>
+<li><a href="https://www.youtube.com/watch?v=vGCzovUFBIY" target="_blank" rel="noopener">Learning Gulp #11 - Gulp Resources &amp; What’s Next </a></li>
+</ul>
+</li>
+<li><p><strong>Get started with gulp</strong>(youtube)</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=DkRoa2LooNM&amp;index=8&amp;list=PLhIIfyPeWUjoySSdufaqfaSLeQDmCCY3Q" target="_blank" rel="noopener">Get started with gulp Part 1: Workflow overview and jade templates</a></li>
+<li><a href="https://www.youtube.com/watch?v=78_iyqT-qT8&amp;index=9&amp;list=PLhIIfyPeWUjoySSdufaqfaSLeQDmCCY3Q" target="_blank" rel="noopener">Get started with gulp Part 2: gulp &amp; Browserify</a></li>
+<li><a href="https://www.youtube.com/watch?v=gRzCAyNrPV8&amp;index=10&amp;list=PLhIIfyPeWUjoySSdufaqfaSLeQDmCCY3Q" target="_blank" rel="noopener">Get started with gulp Part 3: Uglify &amp; environment variables</a></li>
+<li><a href="https://www.youtube.com/watch?v=O_0S6Z9FIKM&amp;index=11&amp;list=PLhIIfyPeWUjoySSdufaqfaSLeQDmCCY3Q" target="_blank" rel="noopener">Get started with gulp Part 4: SASS &amp; CSS minification</a></li>
+<li><a href="https://www.youtube.com/watch?v=nsMsFyLGjSA&amp;list=PLhIIfyPeWUjoySSdufaqfaSLeQDmCCY3Q&amp;index=12" target="_blank" rel="noopener">Get started with gulp Part 5: gulp.watch for true automation</a></li>
+<li><a href="https://www.youtube.com/watch?v=KURMrW-HsY4&amp;list=PLhIIfyPeWUjoySSdufaqfaSLeQDmCCY3Q&amp;index=13" target="_blank" rel="noopener">Get started with gulp Part 6: LiveReload and web server</a></li>
+</ul>
+</li>
+<li><p><strong>Gulp in Action</strong> (慕课网)</p>
+<ul>
+<li><a href="http://www.imooc.com/video/5692" target="_blank" rel="noopener">Gulp in Action(一)</a></li>
+<li><a href="http://www.imooc.com/video/5693" target="_blank" rel="noopener">Gulp in Action(二)</a></li>
+<li><a href="http://www.imooc.com/video/5694" target="_blank" rel="noopener">Gulp in Action(三)</a></li>
+</ul>
+</li>
+<li><p><strong>BGTSD</strong> (youtube)</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=Mo2xqBPbnlQ" target="_blank" rel="noopener">BGTSD - Part 20: Gulp and Babel Basics </a></li>
+<li><a href="https://www.youtube.com/watch?v=5Z82cpVP_qo" target="_blank" rel="noopener">BGTSD - Part 21: TypeScript and Gulp Basics </a></li>
+</ul>
+</li>
+<li><p><strong>John Papa</strong>(付费)</p>
+<ul>
+<li><a href="http://www.pluralsight.com/courses/javascript-build-automation-gulpjs" target="_blank" rel="noopener">JavaScript Build Automation With Gulp.js</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="gulp精彩文章"><a href="#gulp精彩文章" class="headerlink" title="gulp精彩文章"></a>gulp精彩文章</h4><ul>
+<li><a href="http://www.atticuswhite.com/blog/angularjs-configuration-with-gulpjs/" target="_blank" rel="noopener">Using GulpJS to Generate Environment Configuration Modules</a></li>
+<li><a href="http://stefanimhoff.de/2014/gulp-tutorial-1-intro-setup/" target="_blank" rel="noopener">Introduction to Gulp.js</a></li>
+<li><a href="http://www.atticuswhite.com/blog/merging-gulpjs-streams/" target="_blank" rel="noopener">Merging multiple GulpJS streams into one output file</a></li>
+<li><a href="http://advantcomp.com/blog/ES6Modules/" target="_blank" rel="noopener">Getting ES6 modules working thanks to Browserify, Babel, and Gulp</a></li>
+<li>Gulp学习指南系列：<ul>
+<li><a href="http://segmentfault.com/a/1190000002768534" target="_blank" rel="noopener">Gulp学习指南之入门</a></li>
+<li><a href="http://segmentfault.com/a/1190000002932998" target="_blank" rel="noopener">Gulp学习指南之CSS合并、压缩与MD5命名及路径替换</a></li>
+</ul>
+</li>
+<li><a href="http://blog.rangle.io/angular-gulp-bestpractices/?utm_source=javascriptweekly&amp;utm_medium=email" target="_blank" rel="noopener">6 Gulp Best Practices</a> :star:<ul>
+<li>Automate all Imports (gulp-inject, wiredep, useref and angular-file-sort)</li>
+<li>Understand directory structure requirements </li>
+<li>Provide distinct development and production builds  (browser-sync)</li>
+<li>Inject files with gulp-inject and wiredep ( gulp-inject and wiredep )</li>
+<li>Create production builds with gulp-useref (gulp-useref)</li>
+<li>Separate Gulp tasks into multiple files <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">- [Gulp 范儿 -- Gulp 高级技巧](http://csspod.com/advanced-tips-for-using-gulp-js/) :star:</span><br><span class="line">- [Gulp 错误管理](http://csspod.com/error-management-in-gulp/) :star:</span><br><span class="line">- [探究Gulp的Stream](http://segmentfault.com/a/1190000003770541) :star:</span><br><span class="line">- [Gulp安装及配合组件构建前端开发一体化](http://www.dbpoo.com/getting-started-with-gulp/)</span><br><span class="line">- [Gulp入门指南](https://github.com/nimojs/gulp-book)</span><br><span class="line">- [Gulp入门指南 - nimojs](https://github.com/nimojs/blog/issues/19)</span><br><span class="line">- [Gulp入门教程](http://markpop.github.io/2014/09/17/Gulp%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/)</span><br><span class="line">- [Gulp开发教程（翻译）](http://www.w3ctech.com/topic/134)</span><br><span class="line">- [Gulp：任务自动管理工具 - ruanyifeng](http://javascript.ruanyifeng.com/tool/gulp.html)</span><br><span class="line">- [BrowserSync — 你值得拥有的前端同步测试工具](http://segmentfault.com/a/1190000003787713)</span><br><span class="line">- [Essential Plugins for Gulp](http://ipestov.com/essential-plugins-for-gulp/) :star:</span><br><span class="line">- [10 things to know about Gulp](http://engineroom.teamwork.com/10-things-to-know-about-gulp/?utm_source=javascriptweekly&amp;utm_medium=email) :star:</span><br><span class="line">- [Writing a gulp plugin](https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/README.md) :star:</span><br><span class="line">- [Gulp Plugin 开发](https://segmentfault.com/a/1190000000704549) :star:</span><br><span class="line">- [前端 | 重构 gulpfile.js](https://segmentfault.com/a/1190000002880177)</span><br><span class="line">- [gulp使用经验谈](http://www.qiqiboy.com/post/61)</span><br><span class="line">- [Splitting a gulpfile into multiple files](http://macr.ae/article/splitting-gulpfile-multiple-files.html) :star:</span><br><span class="line">- [Make your Gulp modular](http://makina-corpus.com/blog/metier/2015/make-your-gulp-modular)</span><br><span class="line">- [gulp 传参数 实现定制化执行任务](http://yijiebuyi.com/blog/d64c5d28eb539941bf3b855d333850cc.html) 使用 `gulp.env`</span><br><span class="line"></span><br><span class="line">#### gulp和ES6</span><br><span class="line">- [在gulp中使用ES6](http://segmentfault.com/a/1190000004136053) :star:</span><br><span class="line">- [Using ES6 with gulp](https://markgoodyear.com/2015/06/using-es6-with-gulp/)</span><br><span class="line"></span><br><span class="line">#### gulp和babelify</span><br><span class="line">- [Example](https://gist.github.com/hjzheng/0ff59d37aa23fbd831e081138c6f24f9)</span><br><span class="line"></span><br><span class="line">#### debug gulp task</span><br><span class="line">- [Debugging Gulp.js Tasks](http://www.greg5green.com/blog/debugging-gulp-js-tasks/)</span><br><span class="line">- [Debug command line apps like Gulp](https://github.com/s-a/iron-node/blob/master/docs/DEBUG-NODEJS-COMMANDLINE-APPS.md)</span><br><span class="line"></span><br><span class="line">#### gulp项目结构应用实例</span><br><span class="line">- [gulp-AngularJS1.x-seed](https://github.com/hjzheng/gulp-AngularJS1.x-seed) :star: 自己写的一个开发环境(gulp + AngularJS1.x)</span><br><span class="line">- [gulp模式](https://github.com/johnpapa/gulp-patterns) </span><br><span class="line">- [gf-skeleton-angularjs](https://github.com/gf-rd/gf-skeleton-angularjs)</span><br><span class="line">- [generator-hottowel](https://github.com/johnpapa/generator-hottowel)</span><br><span class="line">- [generator-gulp-angular](https://github.com/swiip/generator-gulp-angular#readme)</span><br><span class="line">- [generator-gulper](https://github.com/leaky/generator-gulper)</span><br><span class="line"></span><br><span class="line">#### gulp常见问题 [segmentfault之gulp](http://segmentfault.com/t/gulp?type=newest)</span><br><span class="line"></span><br><span class="line">- [如何拷贝一个目录?](http://stackoverflow.com/questions/25038014/how-do-i-copy-directories-recursively-with-gulp)</span><br><span class="line">```js</span><br><span class="line">gulp.src([ files ], &#123; &quot;base&quot; : &quot;.&quot; &#125;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h4 id="gulp-4-0-相关"><a href="#gulp-4-0-相关" class="headerlink" title="gulp 4.0 相关"></a>gulp 4.0 相关</h4><p>目前 gulp 4.0 还没有正式release，先推荐几篇文章让大家热热身。</p>
+<ul>
+<li><a href="http://segmentfault.com/a/1190000002528547" target="_blank" rel="noopener">Gulp 4.0 前瞻</a></li>
+<li><a href="https://github.com/cssmagic/blog/issues/55" target="_blank" rel="noopener">Gulp 4.0 API 文档</a></li>
+<li><a href="http://www.alloyteam.com/2015/07/update-your-gulp/" target="_blank" rel="noopener">是时候升级你的gulp到4.0了</a></li>
+<li><a href="https://blog.wearewizards.io/migrating-to-gulp-4-by-example" target="_blank" rel="noopener">Migrating to gulp 4 by example</a></li>
+</ul>
+<p><a href="https://github.com/Platform-CUF/use-gulp" target="_blank" rel="noopener">原文use-gulp</a>不定期更新中 … …</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-01-10</span><i class="fa fa-tag"></i><a class="tag" href="/blog/tags/npm/" title="npm">npm </a><a class="tag" href="/blog/tags/gulp/" title="gulp">gulp </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,https://usr80.github.io/blog/2018/01/10/gulp-自动化构建/,KREEDX,gulp 自动化构建,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/blog/2018/01/10/Android跳一跳辅助程序/" title="Android跳一跳辅助程序">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/blog/2018/01/10/Android-图表库/" title="Android 图表库">下一篇</a></li></ul></div><a id="comments"></a><div id="SOHUCS" sid="gulp 自动化构建"></div><script src="//changyan.sohu.com/upload/changyan.js"></script><script>window.changyan.api.config({
+ appid: 'cytkuIhD2',
+ conf: 'prod_f1e563869dbea00ec11d6b96c647a8c4'
+});
+</script></div></div></div></div><script src="/blog/js/jquery.js"></script><script src="/blog/js/jquery-migrate-1.2.1.min.js"></script><script src="/blog/js/jquery.appear.js"></script><script src="/blog/js/utils.js"></script><script src="/blog/js/bg.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script></body></html>

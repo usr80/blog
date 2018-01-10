@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="glol23m@163.com"><title>Android跳一跳辅助程序 · KREEDX</title><meta name="description" content="jumphelper_alpha_0.2.2.apk下载
+adb.zip下载
+
+这个小游戏其实就是根据触摸屏幕的时间长短来决定小人跳动距离的远近
+小人跳动的速度在设备上是个定值，根据手机不同速度可能不同（如果不定那么这游戏更不好玩了）
+我需要计算出来小人当前的位置到下一个我要跳到的位置的距离，恩，我"><meta name="keywords" content="Hexo,HTML,CSS,android,Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/blog/css/style.css"><link rel="stylesheet" href="/blog/css/blog_basic.css"><link rel="stylesheet" href="/blog/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/blog/images/logo@2x.png" style="width:127px;border-radius: 300px;"><h3 title=""><a href="/">KREEDX</a></h3><div class="description"><p>技术分享</p></div></div></div><ul class="social-links"><li><a href="http://weibo.com/u/6343727796?refer_flag=1001030201_&amp;is_all=1"><i class="fa fa-weibo"></i></a></li><li><a qq="1471699315" id="qq"><i class="fa fa-qq"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/blog">首页</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/blog/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Android跳一跳辅助程序</a></h3></div><div class="post-content"><p><a href="../../../../apk/jumphelper_alpha_0.2.2.apk">jumphelper_alpha_0.2.2.apk下载</a></p>
+<p><a href="../../../../tools/adb.zip">adb.zip下载</a></p>
+<ul>
+<li>这个小游戏其实就是根据触摸屏幕的时间长短来决定小人跳动距离的远近</li>
+<li>小人跳动的速度在设备上是个定值，根据手机不同速度可能不同（如果不定那么这游戏更不好玩了）</li>
+<li>我需要计算出来小人当前的位置到下一个我要跳到的位置的距离，恩，我用尺子量</li>
+<li>根据上一条，我觉得我需要“悬浮窗”功能来帮我实现，悬浮窗浮动在微信小游戏的上面，我拖动悬浮窗里面的两个控件来计算两点间的距离</li>
+<li>恩，不错，感觉能量出来，这尺子不错，距离的问题解决了</li>
+<li>量出来了距离，速度的话是个定值我多测试几次能测个大概的速度了，后面慢慢优化</li>
+<li>根据上一条所说，测速，这个就是在adb里面测的了，模拟跳出800ms的距离，然后对比你尺子量出来的，测测测，就有个大概了</li>
+<li>好了，距离，速度都有了，那么接下来触摸的时间t=距离/速度，搞定，去吧，这一步触摸233ms就能到下一个的中心</li>
+<li>什么？你不知道触摸233ms是多长时间？罢了罢了，交给手机去“自摸”好了</li>
+<li>根据上一条，要模拟屏幕触摸事件，那么手机基本需要Root了，Root后应用获取权限，然后执行shell脚本执行自摸搞定         </li>
+</ul>
+<h1 id="震惊，竟然，这种事，惊呆了"><a href="#震惊，竟然，这种事，惊呆了" class="headerlink" title="震惊，竟然，这种事，惊呆了"></a>震惊，竟然，这种事，惊呆了</h1><p><strong>该app支持“手动选位置”以及“自动寻找位置”去跳！</strong>（下面示例图中可以看到两个的区别，视频明天会录制）<br>注意注意：自动寻找位置的算法拷贝自<a href="https://github.com/burningcl/wechat_jump_hack" target="_blank" rel="noopener">burningcl/wechat_jump_hack</a>，省去了我很大的时间（其实就是我懒），感谢感谢感谢！</p>
+<h1 id="App下载地址"><a href="#App下载地址" class="headerlink" title="App下载地址"></a><em>App下载地址</em></h1><p>在apk文件夹下看到了没，里面有jumphelper_alpha_xxx.apk类型的文件，下载版本号最大的就好了。<a href="https://raw.githubusercontent.com/CooLoongWu/JumpHelper/master/apk/jumphelper_alpha_0.2.2.apk" target="_blank" rel="noopener">或者直接点这里下载（0.2.1）</a>  </p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>注意注意注意，因为上文提到了由于安卓模拟触摸事件是需要root权限的，所以要求手机需要root，但是如果你的手机没有root也可以用另一种办法，就是稍微麻烦些，这里我会将两个方法都写上：</p>
+<h3 id="1）手机已Root【手动自动都可】"><a href="#1）手机已Root【手动自动都可】" class="headerlink" title="1）手机已Root【手动自动都可】"></a>1）手机已Root【手动自动都可】</h3><p>这种情况好办呐，直接安装app，然后给root权限和悬浮窗权限，然后在app中点击“打开悬浮窗”按钮就可以看到有一层悬浮窗浮现在屏幕上面了，然后可以看到有一个“跳”的按钮和两个标签一样的东西（其实就是标签，你认为它是指针就好了）。  </p>
+<p>你分别拖动两个标签一个指向小人底部，另一个指向下一次要跳到的位置，然后点击按钮“跳”，很神奇的就跳过去了有没有。 </p>
+<p><strong>但是请注意下操作顺序，先要打开微信的跳一跳，然后在打开这个app的悬浮窗，否则悬浮窗遮住了大半部分的手机屏幕你是没办法做过多其他的操作的。<del>想退出悬浮窗直接打开后台杀掉该app即可（这个我后面会优化，操作太不友好了是么）。</del></strong></p>
+<h3 id="2）手机未Root【手动】"><a href="#2）手机未Root【手动】" class="headerlink" title="2）手机未Root【手动】"></a>2）手机未Root【手动】</h3><p>这种情况的朋友应该居多吧，所以我在源代码中也直接提供了adb工具下载，路径是JumpHelper/tools/adb.zip（<a href="https://raw.githubusercontent.com/CooLoongWu/JumpHelper/master/tools/adb.zip" target="_blank" rel="noopener">或者直接点这里下载</a>）。  </p>
+<ol>
+<li>下载adb.zip并解压到一个文件夹下，例如D:\adb（最好不要用中文路径），此时可以看到文件夹内容如下：</li>
+</ol>
+<p><img src="http://img.blog.csdn.net/20180103103027814?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk3NjIxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<ol>
+<li>配置环境变量，将D:\adb这个路径添加到电脑的环境变量中去，win7下在计算机上右键=&gt;属性=&gt;高级系统设置=&gt;环境变量=&gt;在系统变量中找到path然后选中点击编辑在最后面添加   ;D:\adb  即可（别少了英文的分号）。Win10下右键开始菜单=&gt;系统=&gt;高级系统设置=&gt;环境变量=&gt;在系统变量中找到path然后选中点击编辑然后新建填入   D:\adb 即可（这个就没分号了）。具体还不懂的话请百度“设置环境变量”好了。</li>
+<li>配置完后用数据线连接手机（看到这里后继续看第4条，如果有错误你在回来继续看），如果你电脑上有什么xx手机管家类的那么基本你的电脑就有手机驱动了，如果没有的话可以去 <a href="http://adbshell.com/downloads" target="_blank" rel="noopener">这里</a>下载ADB Driver Installer，然后安装手机的驱动。</li>
+<li>按下Win+R键在弹出的运行框中输入cmd，如下图，回车后即可看到命令行黑窗口，在黑窗口中输入adb shell 按下回车键（可能需要等一段时间），然后观察手机如果弹框出现是否允许电脑调试手机对话框请点击允许调试，然后黑窗口中如果出现类似下图的字符串就证明连接手机成功，可以控制手机了：  </li>
+</ol>
+<p><img src="http://img.blog.csdn.net/20180103104511624?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk3NjIxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述">  <img src="http://img.blog.csdn.net/20180103105123286?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk3NjIxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>然后你可以直接测试下，输入 input swipe 0 500 360 500 1000 然后回车，这句话的意思就是模拟从屏幕坐标的（0，500）滑动到（360，500）处，最后一个1000是时间就是1秒，也就是我们平常的左滑屏幕了，看看是不是屏幕滑动了下。</p>
+<ol>
+<li>如果你输入adb shell后却出现 device not found类的提示，先检查手机是否连接好电脑，确认连接没问题在去上面3那里去下载驱动吧。</li>
+<li>到这里的话你应该已经知道怎么用了吧，手机上安装app打开悬浮窗后，选择跳一跳中小人当前位置以及下一个要跳的位置，然后点击了跳之后你就可以得到一个时间t，拿到这个时间后在4中出现的黑窗口中输入input swipe 500 1200 500 1200 t（拿到的时间），坐标（500 1200）你可以自己按需要调整，只要不是被悬浮窗覆盖的区域就行。</li>
+</ol>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p><del>听说你们还想让他自动跳的？这么贪得无厌的？行，明天就来【你明天看还这里写的还是“明天”】。</del><br>接下来就是不断的优化，适配了</p>
+<h2 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h2><p>代码已上传到GitHub，<a href="https://github.com/CooLoongWu/JumpHelper" target="_blank" rel="noopener">CooLoongWu/JumpHelper</a>，由于只是一个初步的代码，还没有做各种适配，所以这里先不讲解代码了，思路都在上面提到了。等到适配工作基本稳定后在优化代码并分析。</p>
+<h2 id="感谢清单"><a href="#感谢清单" class="headerlink" title="感谢清单"></a>感谢清单</h2><p>1.<a href="https://github.com/czy1121/settingscompat" target="_blank" rel="noopener">czy1121/settingscompat</a><br>做的时候就感觉悬浮窗可能是个坑，需要适配，所以索性GitHub上找了一个悬浮窗库，感谢作者大大@czy1121  </p>
+<p>2.<a href="https://github.com/burningcl/wechat_jump_hack" target="_blank" rel="noopener">burningcl/wechat_jump_hack</a><br>Java版的自动寻找位置的算法，省去了我很大一部分时间，修修改改就直接拿来用了，非常感谢！！！！！  </p>
+<h2 id="展示图片在这里"><a href="#展示图片在这里" class="headerlink" title="展示图片在这里"></a>展示图片在这里</h2><p>刷的不高吧，大神说刷高了可能没朋友【前两张是手动跳的，后面一张是自动跳的】  </p>
+<p><img src="https://github.com/CooLoongWu/JumpHelper/raw/master/imgs/img1.jpg" alt="这里写图片描述"> <img src="https://github.com/CooLoongWu/JumpHelper/raw/master/imgs/img2.jpg" alt="这里写图片描述"> <img src="https://github.com/CooLoongWu/JumpHelper/raw/master/imgs/img3.jpg" alt="这里写图片描述">  </p>
+<h2 id="展示Gif在这里"><a href="#展示Gif在这里" class="headerlink" title="展示Gif在这里"></a>展示Gif在这里</h2><p><del>假期懒得出被窝，在床上录的，简单看下床戏吧</del><br>正经的录制来了  </p>
+<p>1.手动操作，选中两点然后点击跳即可进行一次跳跃  </p>
+<p><img src="https://github.com/CooLoongWu/JumpHelper/raw/master/imgs/gif3.gif" alt="image">  </p>
+<p>2.自动操作，打开悬浮窗后打开游戏，然后点击跳即可  </p>
+<p><img src="https://github.com/CooLoongWu/JumpHelper/raw/master/imgs/auto.gif" alt="image"> </p>
+<p><a href="https://github.com/CooLoongWu/JumpHelper" target="_blank" rel="noopener">JumpHelper原文</a> </p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-01-10</span><i class="fa fa-tag"></i><a class="tag" href="/blog/tags/Android/" title="Android">Android </a><a class="tag" href="/blog/tags/WeChat/" title="WeChat">WeChat </a><a class="tag" href="/blog/tags/Game/" title="Game">Game </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,https://usr80.github.io/blog/2018/01/10/Android跳一跳辅助程序/,KREEDX,Android跳一跳辅助程序,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/blog/2018/01/10/gulp-自动化构建/" title="gulp 自动化构建">下一篇</a></li></ul></div><a id="comments"></a><div id="SOHUCS" sid="Android跳一跳辅助程序"></div><script src="//changyan.sohu.com/upload/changyan.js"></script><script>window.changyan.api.config({
+ appid: 'cytkuIhD2',
+ conf: 'prod_f1e563869dbea00ec11d6b96c647a8c4'
+});
+</script></div></div></div></div><script src="/blog/js/jquery.js"></script><script src="/blog/js/jquery-migrate-1.2.1.min.js"></script><script src="/blog/js/jquery.appear.js"></script><script src="/blog/js/utils.js"></script><script src="/blog/js/bg.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script></body></html>
