@@ -228,7 +228,7 @@ a:hover, a:active {
 }
 
 .post {
-  background-color: #FFF;
+  /*background-color: #FFF;*/
   margin: 30px;
 }
 .post .post-title h1 {
@@ -693,4 +693,9 @@ a.btn {
   }
 }
 
-
+svg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
